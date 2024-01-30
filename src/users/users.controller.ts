@@ -4,20 +4,17 @@ import {
   Delete,
   Get,
   Param,
-  Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUserDto, UserResponse } from './dto/user.dto';
+import { USER_BODY, USER_RESPONSE } from './dto/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
-import { AddRoleDto } from './dto/user-role.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { ROLES } from 'src/roles/roles';
-import { User } from './schemas/user.schema';
 import { SuccessResponse } from 'src/common/dto';
 import { DELETE_TYPE } from './constants';
 
@@ -32,7 +29,7 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'List of users',
-    type: [UserResponse],
+    type: [USER_RESPONSE.User],
   })
   @Get('/users')
   getAllUsers() {
@@ -45,7 +42,7 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'User info',
-    type: [UserResponse],
+    type: USER_RESPONSE.User,
   })
   @Get('/users/:id')
   getUser(@Param('id') id: string) {
@@ -56,7 +53,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user' })
   @ApiBody({
-    type: UpdateUserDto,
+    type: USER_BODY.Update,
   })
   @ApiResponse({
     status: 201,
@@ -64,7 +61,7 @@ export class UsersController {
     type: SuccessResponse,
   })
   @Put('/users/:id')
-  updateUser(@Param('id') id: string, @Body() userDto: UpdateUserDto) {
+  updateUser(@Param('id') id: string, @Body() userDto: USER_BODY.Update) {
     return this.usersService.updateUser(id, userDto);
   }
 

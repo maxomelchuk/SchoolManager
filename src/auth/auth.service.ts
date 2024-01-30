@@ -7,9 +7,9 @@ import {
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from 'src/users/dto/user.dto';
+import { USER_BODY } from 'src/users/dto/user.dto';
 import * as bcrypt from 'bcrypt';
-import { LoginBody } from './auth.dto';
+import { AUTH_BODY } from './auth.dto';
 
 @Dependencies(UsersService, JwtService)
 @Injectable()
@@ -19,12 +19,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(userDto: LoginBody) {
+  async login(userDto: AUTH_BODY.Login) {
     const user = await this.validateUser(userDto);
     return this.generateToken(user);
   }
 
-  async registration(userDto: CreateUserDto) {
+  async registration(userDto: USER_BODY.Create) {
     const candidate = await this.usersService.getUserByEmail(userDto.email);
     if (candidate) {
       throw new HttpException('User is already exist', HttpStatus.BAD_REQUEST);
@@ -45,7 +45,7 @@ export class AuthService {
     };
   }
 
-  async validateUser(userDto: CreateUserDto) {
+  async validateUser(userDto: USER_BODY.Create) {
     const user = await this.usersService.getUserByEmail(userDto.email);
     const passwordEquals = await this.comparePassword(
       userDto.password,

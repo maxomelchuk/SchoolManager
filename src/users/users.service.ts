@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { RolesService } from 'src/roles/roles.service';
 import { ROLES } from 'src/roles/roles';
 import { successResponse } from 'src/common/functions';
@@ -10,6 +9,7 @@ import { ERRORS } from 'src/common/errors';
 import * as bcrypt from 'bcrypt';
 import { DELETE_TYPE } from './constants';
 import { LessonsService } from 'src/lessons/lessons.service';
+import { USER_BODY } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +20,7 @@ export class UsersService {
     private lessonsService: LessonsService,
   ) {}
 
-  async createUser(dto: CreateUserDto) {
+  async createUser(dto: USER_BODY.Create) {
     const user = await new this.userModel({
       ...dto,
       role: ROLES.USER,
@@ -32,7 +32,9 @@ export class UsersService {
   }
 
   async getAllUsers() {
-    const users = await this.userModel.find().populate('role');
+    const users = await this.userModel
+      .find({}, { password: 0 })
+      .populate('role');
     return users;
   }
 
@@ -48,7 +50,7 @@ export class UsersService {
     return user;
   }
 
-  async updateUser(id: string, dto: UpdateUserDto) {
+  async updateUser(id: string, dto: USER_BODY.Update) {
     const user = await this.getUserById(id);
     const dataToUpdate = {};
     switch (true) {
