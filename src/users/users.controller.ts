@@ -19,6 +19,7 @@ import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { ROLES } from 'src/roles/roles';
 import { User } from './schemas/user.schema';
 import { SuccessResponse } from 'src/common/dto';
+import { DELETE_TYPE } from './constants';
 
 @ApiTags('Users')
 @Controller('api')
@@ -65,5 +66,18 @@ export class UsersController {
   @Put('/users/:id')
   updateUser(@Param('id') id: string, @Body() userDto: UpdateUserDto) {
     return this.usersService.updateUser(id, userDto);
+  }
+
+  @Roles(ROLES.USER, ROLES.ADMIN, ROLES.DEVELOPER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Delete user' })
+  @ApiResponse({
+    status: 201,
+    description: 'Delete user',
+    type: SuccessResponse,
+  })
+  @Delete('/users/:id')
+  deleteUser(@Param('id') id: string, @Query('type') type: DELETE_TYPE) {
+    return this.usersService.deleteUser(id, type);
   }
 }
