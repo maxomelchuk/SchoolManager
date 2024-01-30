@@ -5,3 +5,8 @@ export enum ENVS {
   LOCAL = 'local',
   TESTS = 'tests',
 }
+
+export enum DELETE_TYPE {
+  SOFT = 'soft',
+  HARD = 'hard',
+}

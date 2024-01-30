@@ -16,7 +16,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { ROLES } from 'src/roles/roles';
 import { SuccessResponse } from 'src/common/dto';
-import { DELETE_TYPE } from './constants';
+import { DELETE_TYPE } from 'src/common/constants';
 
 @ApiTags('Users')
 @Controller('api')

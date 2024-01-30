@@ -7,52 +7,79 @@ import {
   Param,
   Delete,
   UseGuards,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ROLES } from 'src/roles/roles';
-// import { UserResponse } from 'src/users/dto/user.dto';
+import { TEACHER_BODY, TEACHER_RESPONSE } from './dto/teacher.dto';
+import { SuccessResponse } from 'src/common/dto';
+import { DELETE_TYPE } from 'src/common/constants';
 
 @ApiTags('Teachers')
-@Controller('teachers')
+@Controller('/api')
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
-  @Post()
-  create(@Body() createTeacherDto: CreateTeacherDto) {
-    return this.teachersService.create(createTeacherDto);
-  }
-
-  @Roles(ROLES.USER, ROLES.ADMIN, ROLES.DEVELOPER)
+  @Roles(ROLES.ADMIN, ROLES.DEVELOPER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiOperation({ summary: 'Get all users' })
+  @ApiOperation({ summary: 'Get all teachers' })
   @ApiResponse({
     status: 200,
-    description: 'List of users',
-    // type: [UserResponse],
+    description: 'List of teachers',
+    type: [TEACHER_RESPONSE.Teacher],
   })
-  @Get()
-  findAll() {
-    return this.teachersService.findAll();
+  @Get('/teachers')
+  getAllTeachers() {
+    return this.teachersService.getAllTeachers();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.teachersService.findOne(+id);
+  @Roles(ROLES.ADMIN, ROLES.DEVELOPER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Get teacher info' })
+  @ApiResponse({
+    status: 200,
+    description: 'Teacher info',
+    type: TEACHER_RESPONSE.Teacher,
+  })
+  @Get('/teachers/:id')
+  getTeacher(@Param('id') id: string) {
+    return this.teachersService.getTeacherById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
-    return this.teachersService.update(+id, updateTeacherDto);
+  @Roles(ROLES.ADMIN, ROLES.DEVELOPER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Update teacher' })
+  @ApiBody({
+    type: TEACHER_BODY.Update,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Update teacher',
+    type: SuccessResponse,
+  })
+  @Put('/teachers/:id')
+  updateTeacher(
+    @Param('id') id: string,
+    @Body() teacherDto: TEACHER_BODY.Update,
+  ) {
+    return this.teachersService.updateTeacher(id, teacherDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.teachersService.remove(+id);
+  @Roles(ROLES.ADMIN, ROLES.DEVELOPER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Delete teacher' })
+  @ApiResponse({
+    status: 201,
+    description: 'Delete teacher',
+    type: SuccessResponse,
+  })
+  @Delete('/teachers/:id')
+  deleteTeacher(@Param('id') id: string, @Query('type') type: DELETE_TYPE) {
+    return this.teachersService.deleteTeacher(id, type);
   }
 }

@@ -1,9 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsEmail, IsString } from 'class-validator';
+import { IsOptional, IsEmail, IsString, MaxLength } from 'class-validator';
 import { ObjectId } from 'mongodb';
 
-export namespace USER_BODY {
+export namespace TEACHER_BODY {
   export class Create {
+    @ApiProperty({ example: 'Alex', required: true })
+    @MaxLength(20)
+    @IsEmail()
+    name: string;
+
+    @ApiProperty({ example: 'Smith', required: true })
+    @MaxLength(20)
+    @IsEmail()
+    surname: string;
+
     @ApiProperty({ example: 'some-mail@mail.com', required: true })
     @IsEmail()
     email: string;
@@ -43,8 +53,8 @@ export namespace USER_BODY {
   }
 }
 
-export namespace USER_RESPONSE {
-  export class User {
+export namespace TEACHER_RESPONSE {
+  export class Teacher {
     @ApiProperty({ example: '64a26010f0ba3aa7da88810a' })
     _id: ObjectId;
 

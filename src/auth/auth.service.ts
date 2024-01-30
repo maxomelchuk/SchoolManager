@@ -10,12 +10,15 @@ import { JwtService } from '@nestjs/jwt';
 import { USER_BODY } from 'src/users/dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { AUTH_BODY } from './auth.dto';
+import { TEACHER_BODY } from 'src/teachers/dto/teacher.dto';
+import { TeachersService } from 'src/teachers/teachers.service';
 
 @Dependencies(UsersService, JwtService)
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private teachersService: TeachersService,
     private jwtService: JwtService,
   ) {}
 
@@ -24,15 +27,34 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  async registration(userDto: USER_BODY.Create) {
-    const candidate = await this.usersService.getUserByEmail(userDto.email);
+  async registrationUser(userDto: USER_BODY.Create) {
+    const candidate = await this.teachersService.getTeacherByEmail(
+      userDto.email,
+    );
     if (candidate) {
-      throw new HttpException('User is already exist', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Teacher is already exist',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     const hashPassword = await bcrypt.hash(userDto.password, 5);
 
     const user = await this.usersService.createUser({
       ...userDto,
+      password: hashPassword,
+    });
+    return this.generateToken(user);
+  }
+
+  async registrationTeacher(teacherDto: TEACHER_BODY.Create) {
+    const candidate = await this.usersService.getUserByEmail(teacherDto.email);
+    if (candidate) {
+      throw new HttpException('User is already exist', HttpStatus.BAD_REQUEST);
+    }
+    const hashPassword = await bcrypt.hash(teacherDto.password, 5);
+
+    const user = await this.usersService.createUser({
+      ...teacherDto,
       password: hashPassword,
     });
     return this.generateToken(user);

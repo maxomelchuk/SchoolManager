@@ -7,9 +7,9 @@ import { ROLES } from 'src/roles/roles';
 import { successResponse } from 'src/common/functions';
 import { ERRORS } from 'src/common/errors';
 import * as bcrypt from 'bcrypt';
-import { DELETE_TYPE } from './constants';
 import { LessonsService } from 'src/lessons/lessons.service';
 import { USER_BODY } from './dto/user.dto';
+import { DELETE_TYPE } from 'src/common/constants';
 
 @Injectable()
 export class UsersService {
@@ -84,7 +84,6 @@ export class UsersService {
         break;
       case DELETE_TYPE.HARD:
         await this.userModel.deleteOne({ _id: user._id });
-        await this.lessonsService.deleteLessons(id);
         break;
     }
   }
