@@ -2,11 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function startApp() {
   try {
-    const PORT = process.env.PORT || 3000;
     const app = await NestFactory.create(AppModule);
+    const configService = app.get(ConfigService);
+    const PORT = configService.get(process.env.ENV + '.http.port');
 
     const config = new DocumentBuilder()
       .setTitle('School')

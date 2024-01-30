@@ -11,16 +11,19 @@ import * as path from 'path';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
 import { CoursesModule } from './courses/courses.module';
+import configuration, { getMongoConnectURL } from 'config/configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      isGlobal: true,
+      load: [configuration],
+      cache: true,
     }),
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static'),
     }),
-    MongooseModule.forRoot('mongodb://127.0.0.1:20000/school-manager'),
+    MongooseModule.forRoot(getMongoConnectURL()),
     UsersModule,
     LessonsModule,
     TeachersModule,

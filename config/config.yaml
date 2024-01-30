@@ -1,0 +1,35 @@
+local:
+  http:
+    host: 'localhost'
+    port: 3000
+  db:
+    host: 'localhost'
+    port: 20000
+    database: 'school-manager'
+
+dev:
+  http:
+    host: 'localhost'
+    port: 3000
+  db:
+    host: 'localhost'
+    port: 20000
+    database: 'school-manager'
+
+stage:
+  http:
+    host: 'localhost'
+    port: 3000
+  db:
+    host: 'localhost'
+    port: 20000
+    database: 'school-manager'
+
+prod:
+  http:
+    host: 'localhost'
+    port: 3000
+  db:
+    host: 'localhost'
+    port: 20000
+    database: 'school-manager'
