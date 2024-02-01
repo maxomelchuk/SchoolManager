@@ -53,5 +53,14 @@ export namespace USER_RESPONSE {
 
     @ApiProperty({ example: ['user'] })
     role: string;
+
+    @ApiProperty({ example: 'Alex' })
+    name: string;
+
+    @ApiProperty({ example: 'Smith' })
+    surname: string;
+
+    @ApiProperty({ example: '2023-12-03T09:48:00.000Z' })
+    birthDate: string;
   }
 }

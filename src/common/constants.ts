@@ -10,3 +10,8 @@ export enum DELETE_TYPE {
   SOFT = 'soft',
   HARD = 'hard',
 }
+
+export enum LESSON_CATEGORY {
+  SINGLE = 'single',
+  GROUP = 'group',
+}

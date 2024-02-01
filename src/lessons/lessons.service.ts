@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLessonDto } from './dto/create-lesson.dto';
-import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Lesson, LessonDocument } from './schemas/lesson.schema';
 import mongoose, { Model, Types } from 'mongoose';
 import { successResponse } from 'src/common/functions';
+import { LESSONS_BODY } from './dto/lessons.dto';
+import { ERRORS } from 'src/common/errors';
 
 @Injectable()
 export class LessonsService {
@@ -12,33 +12,35 @@ export class LessonsService {
     @InjectModel(Lesson.name)
     private lessonModel: Model<LessonDocument>,
   ) {}
-  create(createLessonDto: CreateLessonDto) {
-    return;
+  async createLesson(dto: LESSONS_BODY.Create) {
+    const lesson = await new this.lessonModel({
+      ...dto,
+      created_at: new Date(),
+      _id: new mongoose.Types.ObjectId(),
+    });
+    await lesson.save();
+    return lesson;
   }
 
-  findAll() {
-    return;
+  async getAllLessons() {
+    const lessons = await this.lessonModel.find();
+    return lessons;
   }
 
-  findOne(id: number) {
-    return;
+  async getLessonById(id: string) {
+    const lesson = await this.lessonModel.findById(id);
+    if (!lesson) throw ERRORS.LESSON_DOES_NOT_EXIST;
+    return lesson;
   }
 
-  update(id: number, updateLessonDto: UpdateLessonDto) {
-    return;
+  async updateLesson(id: string, dto: LESSONS_BODY.Update) {
+    const lesson = await this.getLessonById(id);
+    await this.lessonModel.updateOne({ _id: lesson._id }, { $set: dto });
+    return successResponse(true);
   }
 
   async deleteLesson(id: string) {
-    await this.lessonModel.deleteOne({ _id: new Types.ObjectId(id) });
-    return successResponse();
-  }
-
-  async deleteLessons(studentId: string | Types.ObjectId) {
-    if (typeof studentId === 'string')
-      studentId = new Types.ObjectId(studentId);
-    await this.lessonModel.deleteMany({
-      student: studentId,
-    });
-    return successResponse();
+    const lesson = await this.getLessonById(id);
+    await this.lessonModel.deleteOne({ _id: lesson._id });
   }
 }

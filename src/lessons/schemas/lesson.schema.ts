@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { LESSON_CATEGORY } from 'src/common/constants';
 export type LessonDocument = HydratedDocument<Lesson>;
 
 @Schema({
@@ -13,15 +14,7 @@ export class Lesson {
   @Prop({ required: false, type: mongoose.Schema.Types.ObjectId })
   _id: mongoose.Schema.Types.ObjectId;
 
-  @ApiProperty()
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' })
-  teacher: mongoose.Schema.Types.ObjectId;
-
-  @ApiProperty()
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  student: mongoose.Schema.Types.ObjectId;
-
-  @ApiProperty({ example: 'Vocal' })
+  @ApiProperty({ example: 'Vocal lesson' })
   @Prop()
   title: string;
 
@@ -41,9 +34,13 @@ export class Lesson {
   @Prop()
   duration: number;
 
+  @ApiProperty({ example: LESSON_CATEGORY.SINGLE })
+  @Prop()
+  category: LESSON_CATEGORY;
+
   @ApiProperty({ example: '2023-12-03T09:48:00.000Z' })
-  @Prop({ type: Date })
-  start_date: Date;
+  @Prop()
+  created_at: Date;
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

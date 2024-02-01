@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TEACHER_BODY } from './dto/teacher.dto';
+import { TEACHER_BODY } from './dto/teachers.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Teacher, TeacherDocument } from './schemas/teacher.schema';
 import mongoose, { Model } from 'mongoose';
@@ -35,13 +35,13 @@ export class TeachersService {
 
   async getTeacherByEmail(email: string) {
     const teacher = await this.teacherModel.findOne({ email: email });
-    if (!teacher) throw ERRORS.TEACHER_IS_NOT_EXISTS;
+    if (!teacher) throw ERRORS.TEACHER_DOES_NOT_EXIST;
     return teacher;
   }
 
   async getTeacherById(id: string) {
     const teacher = await this.teacherModel.findById(id);
-    if (!teacher) throw ERRORS.TEACHER_IS_NOT_EXISTS;
+    if (!teacher) throw ERRORS.TEACHER_DOES_NOT_EXIST;
     return teacher;
   }
 

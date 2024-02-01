@@ -7,10 +7,10 @@ import {
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { USER_BODY } from 'src/users/dto/user.dto';
+import { USER_BODY } from 'src/users/dto/users.dto';
 import * as bcrypt from 'bcrypt';
 import { AUTH_BODY } from './auth.dto';
-import { TEACHER_BODY } from 'src/teachers/dto/teacher.dto';
+import { TEACHER_BODY } from 'src/teachers/dto/teachers.dto';
 import { TeachersService } from 'src/teachers/teachers.service';
 
 @Dependencies(UsersService, JwtService)

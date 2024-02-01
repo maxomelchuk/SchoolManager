@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 enum KEYS {
-  USER_IS_NOT_EXISTS = 'USER_IS_NOT_EXISTS',
+  USER_DOES_NOT_EXIST = 'USER_DOES_NOT_EXIST',
   USER_WITH_THIS_EMAIL_ALREADY_EXISTS = 'USER_WITH_THIS_EMAIL_ALREADY_EXISTS',
   INVALID_PASSWORD = 'INVALID_PASSWORD',
-  TEACHER_IS_NOT_EXISTS = 'TEACHER_IS_NOT_EXISTS',
+  TEACHER_DOES_NOT_EXIST = 'TEACHER_DOES_NOT_EXIST',
   TEACHER_WITH_THIS_EMAIL_ALREADY_EXISTS = 'TEACHER_WITH_THIS_EMAIL_ALREADY_EXISTS',
+  LESSON_DOES_NOT_EXIST = 'LESSON_DOES_NOT_EXIST',
 }
 
 export enum CODES {
@@ -14,11 +15,12 @@ export enum CODES {
 }
 
 export enum TEXTS {
-  USER_IS_NOT_EXISTS = 'User is not exist',
+  USER_DOES_NOT_EXIST = 'User does not exist',
   USER_WITH_THIS_EMAIL_ALREADY_EXISTS = 'User with this email already exists',
   INVALID_PASSWORD = 'Invalid password',
-  TEACHER_IS_NOT_EXISTS = 'Teacher is not exist',
+  TEACHER_DOES_NOT_EXIST = 'Teacher does not exist',
   TEACHER_WITH_THIS_EMAIL_ALREADY_EXISTS = 'Teacher with this email already exists',
+  LESSON_DOES_NOT_EXIST = 'Lesson is not exist',
 }
 
 export class ValidationException extends HttpException {
@@ -34,7 +36,7 @@ export class ValidationException extends HttpException {
 }
 
 export const ERRORS = {
-  USER_IS_NOT_EXISTS: new ValidationException('USER_IS_NOT_EXISTS'),
+  USER_DOES_NOT_EXIST: new ValidationException('USER_DOES_NOT_EXIST'),
   USER_WITH_THIS_EMAIL_ALREADY_EXISTS: new ValidationException(
     'USER_WITH_THIS_EMAIL_ALREADY_EXISTS',
   ),
@@ -42,7 +44,8 @@ export const ERRORS = {
     'TEACHER_WITH_THIS_EMAIL_ALREADY_EXISTS',
   ),
   INVALID_PASSWORD: new ValidationException('INVALID_PASSWORD'),
-  TEACHER_IS_NOT_EXISTS: new ValidationException('TEACHER_IS_NOT_EXISTS'),
+  TEACHER_DOES_NOT_EXIST: new ValidationException('TEACHER_DOES_NOT_EXIST'),
+  LESSON_DOES_NOT_EXIST: new ValidationException('LESSON_DOES_NOT_EXIST'),
 };
 
 export const getContextCode = (code: CODES): { context: { code: number } } => ({

@@ -14,6 +14,5 @@ export default function config() {
 export function getMongoConnectURL() {
   const configuration = config();
   const env = configuration[process.env.ENV].db;
-  console.log(env);
   return `mongodb://${env.host}:${env.port}/${env.database}`;
 }

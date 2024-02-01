@@ -16,7 +16,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ROLES } from 'src/roles/roles';
-import { TEACHER_BODY, TEACHER_RESPONSE } from './dto/teacher.dto';
+import { TEACHER_BODY, TEACHER_RESPONSE } from './dto/teachers.dto';
 import { SuccessResponse } from 'src/common/dto';
 import { DELETE_TYPE } from 'src/common/constants';
 

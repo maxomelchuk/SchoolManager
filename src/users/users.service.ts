@@ -8,7 +8,7 @@ import { successResponse } from 'src/common/functions';
 import { ERRORS } from 'src/common/errors';
 import * as bcrypt from 'bcrypt';
 import { LessonsService } from 'src/lessons/lessons.service';
-import { USER_BODY } from './dto/user.dto';
+import { USER_BODY } from './dto/users.dto';
 import { DELETE_TYPE } from 'src/common/constants';
 
 @Injectable()
@@ -40,13 +40,13 @@ export class UsersService {
 
   async getUserByEmail(email: string) {
     const user = await this.userModel.findOne({ email: email });
-    if (!user) throw ERRORS.USER_IS_NOT_EXISTS;
+    if (!user) throw ERRORS.USER_DOES_NOT_EXIST;
     return user;
   }
 
   async getUserById(id: string) {
     const user = await this.userModel.findById(id);
-    if (!user) throw ERRORS.USER_IS_NOT_EXISTS;
+    if (!user) throw ERRORS.USER_DOES_NOT_EXIST;
     return user;
   }
 
